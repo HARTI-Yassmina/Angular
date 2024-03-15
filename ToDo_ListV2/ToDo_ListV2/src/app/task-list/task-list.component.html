@@ -1,0 +1,23 @@
+<h2> TO DO List </h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title </th>
+            <th> Description  </th>
+            <th>completed   </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let task of tasks" >
+            <td>{{task.title}}</td>
+            <td>{{task.description}}</td>
+            <td>{{task.completed}}</td>
+            <td><button (click)="updateTask(task.id)" class="btn btn-info"> Update</button></td>
+            
+
+
+        </tr>
+        
+    </tbody>
+</table>
