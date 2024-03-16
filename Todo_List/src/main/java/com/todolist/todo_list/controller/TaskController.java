@@ -7,7 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
@@ -34,6 +37,35 @@ public class TaskController  {
         return ResponseEntity.ok(task) ;
 }
 
+@PutMapping("/tasks/{id}")
+    public ResponseEntity<Task> updateTask( @PathVariable Long id , @RequestBody Task taskUpdated ){
+    Task task =  taskRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + id));
+        task.setTitle(taskUpdated.getTitle());
+        task.setDescription(taskUpdated.getDescription());
+        Task taskReturn = taskRepository.save(task);
+
+    return ResponseEntity.ok(taskReturn) ;
+    }
+@DeleteMapping("/tasks/{id}")
+    public ResponseEntity<Map<String,Boolean> > deleteTask(@PathVariable Long id ){
+    Task task =  taskRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + id));
+    taskRepository.delete(task);
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("deleted" , Boolean.TRUE);
+    return ResponseEntity.ok(response);
+}
+    @PutMapping("/tasks/complete/{id}")
+    public ResponseEntity<Task> completeTask( @PathVariable Long id , @RequestBody Task taskUpdated ){
+        Task task =  taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + id));
+
+        task.setCompleted(true);
+        Task taskReturn = taskRepository.save(task);
+
+        return ResponseEntity.ok(taskReturn) ;
+    }
 
 
 
